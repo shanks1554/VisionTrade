@@ -1,3 +1,7 @@
 crewai
 crewai-tools
 pydantic
+google-generativeai
+chromadb
+requests
+python-dotenv
