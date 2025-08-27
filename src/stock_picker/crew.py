@@ -1,10 +1,23 @@
+import os
 from crewai import Agent, Crew, Task, Process
+from crewai.crew import EntityMemory
 from crewai.project import crew, agent, task, CrewBase
 from pydantic import BaseModel, Field
 from typing import List, Optional
 from crewai_tools import SerperDevTool
 from .tools.push_tool import PushNotificationTool
+from crewai.memory import LongTermMemory, ShortTermMemory
+from crewai.memory.storage.rag_storage import RAGStorage
+from crewai.memory.storage.ltm_sqlite_storage import LTMSQLiteStorage
+from crewai import LLM
 
+gemini_embedder_config = {
+    'provider':'google',
+    'config': {
+        'model':'embedding-001',
+        'api_key': os.environ['GEMINI_API_KEY']
+    }
+}
 class TrendingCompany(BaseModel):
     name: str = Field(description = 'Indian Company Name')
     ticker: str = Field(description = 'NSE/BSE Stock Ticker Symbol (e.g., RELIANCE, TCS, INFY)')
@@ -116,5 +129,27 @@ class StockPicker():
             process = Process.hierarchical,
             verbose = True,
             manager_agent = manager,
-            memory = False
+            memory = True,
+            # Long-term memory for persistent storage across sessions
+            long_term_memory = LongTermMemory(
+                storage = LTMSQLiteStorage(
+                    db_path = './memory/long_term_memory_storage.db'
+                )
+            ),
+            # Short-term memory for current context using RAG
+            short_term_memory = ShortTermMemory(
+                storage = RAGStorage(
+                    embedder_config = gemini_embedder_config,
+                    type = 'short_term',
+                    path = './memory/'
+                )
+            ),
+            # Entity memory for tracking key information about entities
+            entity_memory = EntityMemory(
+                storage = RAGStorage(
+                    embedder_config = gemini_embedder_config,
+                    type = 'short_term',
+                    path = './memory/'
+                )
+            ),
         )
