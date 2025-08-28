@@ -9,7 +9,6 @@ from .tools.push_tool import PushNotificationTool
 from crewai.memory import LongTermMemory, ShortTermMemory
 from crewai.memory.storage.rag_storage import RAGStorage
 from crewai.memory.storage.ltm_sqlite_storage import LTMSQLiteStorage
-from crewai import LLM
 
 gemini_embedder_config = {
     'provider':'google',
