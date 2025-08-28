@@ -75,7 +75,8 @@ class StockPicker():
         return Agent(
             config = self.agents_config['trending_company_finder'],
             tools = [SerperDevTool()],
-            verbose = True
+            verbose = True,
+            memory = True
         )
     
     @agent
@@ -83,7 +84,8 @@ class StockPicker():
         return Agent(
             config = self.agents_config['financial_researcher'],
             tools = [SerperDevTool()],
-            verbose = True
+            verbose = True,
+            memory = True
         )
     
     @agent
@@ -91,7 +93,8 @@ class StockPicker():
         return Agent(
             config = self.agents_config['stock_picker'],
             tools = [PushNotificationTool()],
-            verbose = True
+            verbose = True,
+            memory = True
         )
     
     @task

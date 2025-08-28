@@ -51,18 +51,16 @@ def run():
         # Debug: Print API key status
         google_key = os.getenv('GOOGLE_API_KEY')
         serper_key = os.getenv('SERPER_API_KEY')
-        openai_key = os.getenv('OPENAI_API_KEY')
         
         print(f"🔑 API Keys Status:")
         print(f"   Google API Key: {'✅ Set' if google_key else '❌ Not found'}")
         print(f"   Serper API Key: {'✅ Set' if serper_key else '❌ Not found'}")
-        print(f"   OpenAI API Key: {'✅ Set' if openai_key else '❌ Not found'}")
         print("-" * 60)
         
         # Check if required API keys are set
-        if not google_key and not openai_key:
-            print("❌ Error: Neither GOOGLE_API_KEY nor OPENAI_API_KEY found.")
-            print("Please set at least one of these API keys in your .env file.")
+        if not google_key:
+            print("❌ Error: GOOGLE_API_KEY not found.")
+            print("Please set at Google API key in your .env file.")
             return
             
         if not serper_key:
